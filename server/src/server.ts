@@ -1,66 +1,61 @@
-import express from 'express';
-import { ApolloServer } from 'apollo-server-express';
-import path from 'path';
-import { authMiddleware } from './utils/auth';
-import typeDefs from './schemas/typeDefs';
-import resolvers from './schemas/resolvers';
-import db from './config/connection';
+// import all dependencies
 
-const app = express();
+import express from 'express';
+import db from './config/connection';
+import path from 'path';
+import { ApolloServer } from '@apollo/server';
+import { authToken } from './utils/auth';
+import { expressMiddleware } from '@apollo/server/express4';
+import { fileURLToPath } from 'node:url';
+import { typeDefs, resolvers, } from './schemas/index.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const PORT = process.env.PORT || 3001;
 
+// set up servers
+// apollo server
+const app = express();
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: authMiddleware
 });
 
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+// define apollo server
+const startApolloServer = async () => {
+  await server.start();
 
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../client/dist')));
+  // use express middleware
+  app.use(express.urlencoded({ extended: true }));
+  app.use(express.json());
 
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+
+
+  // test queries (apollo)
+  app.use('/graphql', expressMiddleware(server as any, {
+    context: authToken as any
+  }));
+
+
+
+  // if we're in production, serve client/build as static assets
+  if (process.env.NODE_ENV === 'production') {
+  const address = path.join(__dirname, '../../client/dist');
+  app.use(express.static(address));
+  app.get('*', (_req, res) => {
+    res.sendFile(path.join(__dirname, '../../client/dist/index.html'));
   });
 }
 
-const startApolloServer = async () => {
-  await server.start();
-  server.applyMiddleware({ app });
+// set up error message for mongoDB
+db.on("error", console.error.bind(console, "MongoDB had a bad time. Error:"));
 
-  db.once('open', () => {
-    app.listen(PORT, () => {
-      console.log(`API server running on port ${PORT}!`);
-      console.log(`Use GraphQL at http://localhost:${PORT}${server.graphqlPath}`);
-    });
-  });
-};
+// listen for server requests from either port
+app.listen(PORT, () => {
+  console.log(`API running on port ${PORT}!`);
+  console.log(`GraphQL @ http://localhost:${PORT}/graphql.`);
+});
+
+
 
 startApolloServer();
-
-
-
-
-// import express from 'express';
-// import path from 'node:path';
-// import db from './config/connection.js';
-// import routes from './routes/index.js';
-
-// const app = express();
-// const PORT = process.env.PORT || 3001;
-
-// app.use(express.urlencoded({ extended: true }));
-// app.use(express.json());
-
-// // if we're in production, serve client/build as static assets
-// if (process.env.NODE_ENV === 'production') {
-//   app.use(express.static(path.join(__dirname, '../client/build')));
-// }
-
-// app.use(routes);
-
-// db.once('open', () => {
-//   app.listen(PORT, () => console.log(`🌍 Now listening on localhost:${PORT}`));
-// });
