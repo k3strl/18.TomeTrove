@@ -4,7 +4,7 @@ import express from 'express';
 import db from './config/connection';
 import path from 'path';
 import { ApolloServer } from '@apollo/server';
-import { authToken } from './utils/auth';
+import { authToken } from './services/auth';
 import { expressMiddleware } from '@apollo/server/express4';
 import { fileURLToPath } from 'node:url';
 import { typeDefs, resolvers, } from './schemas/index.js';
@@ -14,7 +14,6 @@ const __dirname = path.dirname(__filename);
 const PORT = process.env.PORT || 3001;
 
 // set up servers
-// apollo server
 const app = express();
 const server = new ApolloServer({
   typeDefs,

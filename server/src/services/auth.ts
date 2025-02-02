@@ -10,7 +10,7 @@ interface JwtPayload {
   email: string,
 }
 
-export const authToken = (req: Request, res: Response, next: NextFunction) => {
+export const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers.authorization;
 
   if (authHeader) {
@@ -37,6 +37,3 @@ export const signToken = (username: string, email: string, _id: unknown) => {
 
   return jwt.sign(payload, secretKey, { expiresIn: '1h' });
 };
-
-// from server.ts:
-// import { authToken } from './utils/auth';
