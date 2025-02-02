@@ -1,3 +1,9 @@
+// imports
+
+export * from './typeDefs';
+export * from '.resolvers';
+
+export { typeDefs, resolvers };
 
 
 // from server.ts
