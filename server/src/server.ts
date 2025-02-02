@@ -40,22 +40,21 @@ const startApolloServer = async () => {
 
   // if we're in production, serve client/build as static assets
   if (process.env.NODE_ENV === 'production') {
-  const address = path.join(__dirname, '../../client/dist');
-  app.use(express.static(address));
-  app.get('*', (_req, res) => {
-    res.sendFile(path.join(__dirname, '../../client/dist/index.html'));
+    const address = path.join(__dirname, '../../client/dist');
+    app.use(express.static(address));
+    app.get('*', (_req, res) => {
+      res.sendFile(path.join(__dirname, '../../client/dist/index.html'));
+    });
+  }
+
+  // set up error message for mongoDB
+  db.on("error", console.error.bind(console, "MongoDB had a bad time. Error:"));
+
+  // listen for server requests from either port
+  app.listen(PORT, () => {
+    console.log(`API running on port ${PORT}!`);
+    console.log(`GraphQL @ http://localhost:${PORT}/graphql.`);
   });
-}
-
-// set up error message for mongoDB
-db.on("error", console.error.bind(console, "MongoDB had a bad time. Error:"));
-
-// listen for server requests from either port
-app.listen(PORT, () => {
-  console.log(`API running on port ${PORT}!`);
-  console.log(`GraphQL @ http://localhost:${PORT}/graphql.`);
-});
-
-
+};
 
 startApolloServer();
