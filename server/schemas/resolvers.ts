@@ -1,5 +1,5 @@
 // import user model, auth functions
-import { saveBook } from '../dist/controllers/user-controller';
+// import { saveBook } from '../dist/controllers/user-controller';
 import { User } from '../src/models/index';
 import { signToken, AuthError } from '../src/services/auth';
 
@@ -38,10 +38,10 @@ const resolvers = {
   },
   
   // mutations
-  // sign up
-  // login
-  // save new book
-  // remove saved book
+    // sign up
+    // login
+    // save new book
+    // remove saved book
   
   Mutation: {
     //adds user to db using AddNewUser args
@@ -55,35 +55,53 @@ const resolvers = {
     login: async (_parent: any, { email, password }: UserLogin) => {
       const user = await User.findOne({ email });
       if (!user) {
-        throw new AuthError('Oops! Username or password incorrect. (user)');
+        //FIXME - make it harder for brute-force attacks by throwing the same error for both username and pass
+        throw new AuthError('Oops! Username or password incorrect. (TESTuser)');
       }
       const passwordAuth = await user.isCorrectPassword(password);
       if (!passwordAuth) {
-        throw new AuthError('Oops! Username or password incorrect. (pass)');
+        //FIXME make it harder for brute-force attacks by throwing the same error for both username and pass
+        throw new AuthError('Oops! Username or password incorrect. (TESTpass)');
       }
       const token = signToken(user.username, user.email, user._id);
       return { token, user };
     },
 // save new book to the user obj that matdches the current user (as indicated by the token)
   saveBook: async (_parent: any, { input }: any, context: any) => {
-    if (!context.user) throw new authError('Please log in first.')
+    if (!context.user) throw new AuthError('Please log in first.')
     try {
-      console.log(`Saving new book under BookId ${input.bookId} for user ${context.user._id}`);
+      console.log(`Saving new book ${input.bookId} for ${context.user._id}`);
       const updatedUser = await User.findByIdAndUpdate(
         context.user._id,
         { $addToSet: { savedBooks: input } },
         { new: true, runValidators: true }
       );
-      console.log("Book saved!")
+      console.log('Book saved for ${context.user._id}.')
       return updatedUser;
     } catch (err) {
         console.error(err);
-        throw new Error('Error saving book');
+        throw new Error('Error; did not save book.');
       }
     },
-//remove a book
-
-    
+//remove saved book
+    removeBook: async (_parent: any, { bookId }: any, context: any) => {
+      if (!context.user) throw new Error('You must be logged in');
+      try {
+          console.log(`Removing book ${bookId} for user ${context.user._id}`)
+          const updatedUser = await User.findByIdAndUpdate(
+              context.user._id,
+              { $pull: { savedBooks: { bookId } } },
+              { new: true }
+          );
+          console.log('Book successfully removed.')
+          return updatedUser;
+      } catch (err) {
+          console.error(err);
+          throw new Error('Error; did not remove book.');
+      }
+    },
+  },
+};
 // export resolvers
 export default resolvers;
     
