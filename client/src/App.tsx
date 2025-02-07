@@ -30,9 +30,8 @@ const client = new ApolloClient({
 function App() {
   return (
     <ApolloProvider client={client}>
-      <Router>
-        {/* TODO: Rest of your application */}
-      </Router>
+      <Navbar />
+      <Outlet />
     </ApolloProvider>
   );
 }
