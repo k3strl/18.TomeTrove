@@ -96,4 +96,4 @@ export const User = model("User", userSchema);
 
 // const User = model<UserDocument>('User', userSchema);
 
-// export default User;
+export default User;

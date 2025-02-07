@@ -1,10 +1,4 @@
-// imports
-
-export * from './typeDefs';
-export * from '.resolvers';
+import typeDefs from './typeDefs';
+import resolvers from './resolvers';
 
 export { typeDefs, resolvers };
-
-
-// from server.ts
-// import { typeDefs, resolvers, context } from './schemas/index.js';

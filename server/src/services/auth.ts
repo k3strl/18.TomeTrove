@@ -35,14 +35,14 @@ export const signToken = (
 };
 
 // send graphql error if auth doesn't pass check
-export class AuthenticationError extends GraphQLError {
+export class AuthError extends GraphQLError {
   constructor(message: string) {
     super(message, {
       extensions: {
         code: 'UNAUTHENTICATED'
       }
     });
-    Object.defineProperty(this, 'name', { value: 'AuthenticationError' });
+    Object.defineProperty(this, 'name', { value: 'AuthError' });
   }
 };
 
