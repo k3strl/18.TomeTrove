@@ -1,4 +1,4 @@
-import React from 'react';
+import Navbar from './components/Navbar'
 import { 
   ApolloClient, 
   InMemoryCache, 
@@ -6,8 +6,7 @@ import {
   createHttpLink 
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
-import { BrowserRouter as Router } from 'react-router-dom';
-
+import { Outlet } from 'react-router-dom';
 const httpLink = createHttpLink({
   uri: '/graphql'
 });
