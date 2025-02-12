@@ -1,10 +1,10 @@
 // import all dependencies
 
 import express from 'express';
-import db from './config/connection';
+import db from './config/connection.js';
 import path from 'path';
 import { ApolloServer } from '@apollo/server';
-import { authToken } from './services/auth';
+import { authToken } from './services/auth.js';
 import { expressMiddleware } from '@apollo/server/express4';
 import { fileURLToPath } from 'node:url';
 import { typeDefs, resolvers, } from './schemas/index.js';

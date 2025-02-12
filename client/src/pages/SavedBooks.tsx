@@ -3,17 +3,17 @@ import { Container, Card, Button, Row, Col } from "react-bootstrap";
 import { Book } from "../models/Book";
 import { QUERY_ME } from "../utils/queries";
 import { REMOVE_BOOK } from "../utils/mutations";
-import { getMe, deleteBook } from "../utils/API";
+// import { getMe, deleteBook } from "../utils/API";
 import Auth from "../utils/auth";
 import { removeBookId } from "../utils/localStorage";
-import type { User } from "../models/User";
+// import type { User } from "../models/User";
 import { useQuery, useMutation } from "@apollo/client";
 
 const SavedBooks = () => {
   // queries & mutations go here
   // loading variable??
   const { loading, data, refetch } = useQuery(QUERY_ME);
-  const [removeBook, { error }] = useMutation(REMOVE_BOOK);
+  const [removeBook] = useMutation(REMOVE_BOOK);
   const userData = data?.Me || {};
 
   useEffect(() => { refetch() }, [userData])
@@ -31,15 +31,9 @@ const SavedBooks = () => {
 
     try {
       await removeBook({
-        variables: { bookId: book Id }
+        variables: { bookId: bookId }
         });
 
-      if (!response.ok) {
-        throw new Error("something went wrong!");
-      }
-
-      const updatedUser = await response.json();
-      setUserData(updatedUser);
       // upon success, remove book's id from localStorage
       removeBookId(bookId);
     } catch (err) {
@@ -48,7 +42,7 @@ const SavedBooks = () => {
   };
 //this is fine V
   // if data isn't here yet, say so
-  if (!userDataLength) {
+  if (loading) {
     return <h2>LOADING...</h2>;
   }
 // render react component, this should all be fine V
@@ -72,7 +66,7 @@ const SavedBooks = () => {
             : "You have no saved books!"}
         </h2>
         <Row>
-          {userData.savedBooks.map((book) => {
+          {userData.savedBooks.map((book:Book) => {
             return (
               <Col md="4">
                 <Card key={book.bookId} border="dark">

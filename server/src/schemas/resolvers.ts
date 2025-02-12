@@ -1,7 +1,7 @@
 // import user model, auth functions
 // import { saveBook } from '../dist/controllers/user-controller';
-import { User } from '../src/models/index';
-import { signToken, AuthError } from '../src/services/auth';
+import { User } from '../models/index.js';
+import { signToken, AuthError } from '../services/auth.js';
 
 
 // need interfaces for user, input, login
