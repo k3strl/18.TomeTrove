@@ -11,7 +11,7 @@ const SavedBooks = () => {
   // queries & mutations go here
   // loading variable??
   const { loading, data, refetch } = useQuery(QUERY_ME);
-  const [removeBook] = useMutation(REMOVE_BOOK);
+  const [removeBook, { error }] = useMutation(REMOVE_BOOK);
   const userData = data?.Me || {};
 
   useEffect(() => { refetch() }, [userData])
@@ -34,6 +34,7 @@ const SavedBooks = () => {
 
       // upon success, remove book's id from localStorage
       removeBookId(bookId);
+      refetch();
     } catch (err) {
       console.error(err);
     }
@@ -91,6 +92,11 @@ const SavedBooks = () => {
             );
           })}
         </Row>
+        {error && (
+          <div className="my-3 p-3 bg-danger text-white">
+            {error.message}
+          </div>
+        )}
       </Container>
     </>
   );
