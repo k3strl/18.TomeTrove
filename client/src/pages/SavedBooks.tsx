@@ -3,22 +3,20 @@ import { Container, Card, Button, Row, Col } from "react-bootstrap";
 import { Book } from "../models/Book";
 import { QUERY_ME } from "../utils/queries";
 import { REMOVE_BOOK } from "../utils/mutations";
-// import { getMe, deleteBook } from "../utils/API";
 import Auth from "../utils/auth";
 import { removeBookId } from "../utils/localStorage";
-// import type { User } from "../models/User";
 import { useQuery, useMutation } from "@apollo/client";
 
 const SavedBooks = () => {
   // queries & mutations go here
   // loading variable??
   const { loading, data, refetch } = useQuery(QUERY_ME);
-  const [removeBook] = useMutation(REMOVE_BOOK);
+  const [removeBook, { error }] = useMutation(REMOVE_BOOK);
   const userData = data?.Me || {};
 
   useEffect(() => { refetch() }, [userData])
 
-  // create function that accepts the book's mongo _id value as param and deletes the book from the database - this should be fine V
+  // create function that accepts the book's mongo _id value as param and deletes the book from the database - this should be fine ...
 
   const handleDeleteBook = async (bookId: string) => {
     const token = Auth.loggedIn() ? Auth.getToken() : null;
@@ -36,11 +34,12 @@ const SavedBooks = () => {
 
       // upon success, remove book's id from localStorage
       removeBookId(bookId);
+      refetch();
     } catch (err) {
       console.error(err);
     }
   };
-//this is fine V
+//this should be fine ...
   // if data isn't here yet, say so
   if (loading) {
     return <h2>LOADING...</h2>;
@@ -93,6 +92,11 @@ const SavedBooks = () => {
             );
           })}
         </Row>
+        {error && (
+          <div className="my-3 p-3 bg-danger text-white">
+            {error.message}
+          </div>
+        )}
       </Container>
     </>
   );
