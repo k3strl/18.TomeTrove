@@ -3,10 +3,8 @@ import { Container, Card, Button, Row, Col } from "react-bootstrap";
 import { Book } from "../models/Book";
 import { QUERY_ME } from "../utils/queries";
 import { REMOVE_BOOK } from "../utils/mutations";
-// import { getMe, deleteBook } from "../utils/API";
 import Auth from "../utils/auth";
 import { removeBookId } from "../utils/localStorage";
-// import type { User } from "../models/User";
 import { useQuery, useMutation } from "@apollo/client";
 
 const SavedBooks = () => {
@@ -18,7 +16,7 @@ const SavedBooks = () => {
 
   useEffect(() => { refetch() }, [userData])
 
-  // create function that accepts the book's mongo _id value as param and deletes the book from the database - this should be fine V
+  // create function that accepts the book's mongo _id value as param and deletes the book from the database - this should be fine ...
 
   const handleDeleteBook = async (bookId: string) => {
     const token = Auth.loggedIn() ? Auth.getToken() : null;
@@ -40,7 +38,7 @@ const SavedBooks = () => {
       console.error(err);
     }
   };
-//this is fine V
+//this should be fine ...
   // if data isn't here yet, say so
   if (loading) {
     return <h2>LOADING...</h2>;
