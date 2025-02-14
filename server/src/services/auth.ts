@@ -8,7 +8,7 @@ dotenv.config();
 export const authToken = ({ req }: any) => {
   let token = req.body.token || req.query.token || req.headers.authorization;
   if (req.headers.authorization) {
-    token = token.split('').pop().trim();
+    token = token.split(' ').pop().trim();
   }
   if (!token) {
     console.log('No token!');

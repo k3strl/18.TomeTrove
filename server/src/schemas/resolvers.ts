@@ -29,6 +29,7 @@ interface UserLogin {
 const resolvers = {
   Query: {
     Me: async (_parent: any, _args: any, context: any) => {
+
       if (context.user) {
         const userData = await User.findById(context.user._id).select('-__v -password');
         return userData;

@@ -13,7 +13,6 @@ const SavedBooks = () => {
   const { loading, data, refetch } = useQuery(QUERY_ME);
   const [removeBook, { error }] = useMutation(REMOVE_BOOK);
   const userData = data?.Me || {};
-
   useEffect(() => { refetch() }, [userData])
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database - this should be fine ...
@@ -58,14 +57,14 @@ const SavedBooks = () => {
       </div>
       <Container>
         <h2 className="pt-5">
-          {userData.savedBooks.length
+          {userData.savedBooks?.length
             ? `Viewing ${userData.savedBooks.length} saved ${
                 userData.savedBooks.length === 1 ? "book" : "books"
               }:`
             : "You have no saved books!"}
         </h2>
         <Row>
-          {userData.savedBooks.map((book:Book) => {
+          {userData.savedBooks?.map((book:Book) => {
             return (
               <Col md="4">
                 <Card key={book.bookId} border="dark">
