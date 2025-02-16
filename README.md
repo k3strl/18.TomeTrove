@@ -24,8 +24,7 @@ This is an existing codebase, supplied by edX. My job was to take a RESTfulAPI a
   - [Questions?](#questions)
 
 ## Screenshot
-
-![asssets/TomeTrove_screenshot.png]
+![Screenshot](asssets/TomeTrove_screenshot.png)
 
 ## User Story
 
