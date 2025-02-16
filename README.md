@@ -5,7 +5,7 @@
 
 ## Description
 
-This is an existing codebase, supplied by edX. My job was to take a RESTfulAPI and convert it to use GraphQL/Apollo instead. The app is deployed [here]()__.
+This is an existing codebase, supplied by edX. My job was to take a RESTfulAPI and convert it to use GraphQL/Apollo instead. The app is deployed [here](https://one8-tometrove.onrender.com/).
 
 ## Table of Contents
 
@@ -25,7 +25,7 @@ This is an existing codebase, supplied by edX. My job was to take a RESTfulAPI a
 
 ## Screenshot
 
-![Screenshot)
+![asssets/TomeTrove_screenshot.png]
 
 ## User Story
 
